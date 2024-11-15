@@ -1,0 +1,97 @@
+/prep7
+
+mp,ex,1,70e9 !Young's modulus (N/m^2) assigned to material #1
+mp,prxy,1,0.3 !Poisson's ratio assigned to material #1
+
+n,1,0, 0, 0
+n,17,4,0,0
+n,18,0,0.25,0
+n,34,4,0.25,0
+n,35,0,0.25,0.25
+n,51,4,0.25,0.25
+n,52,0,0,0.25
+n,68,4,0,0.25
+
+nplo 
+
+et,1,link180 !this is a bar element with an identification number = 1
+
+!sectype,1,beam,ctube,ctube1
+sectype,1,link,link1
+!secdata,0.003969,0.0047625
+secdata,0.000021766
+
+FILL,1,17, , 2
+FILL,18,34, , 19
+FILL,35,51, , 36
+FILL,52,68, , 53
+
+E,1,2
+E,2,3
+E,18,19
+E,19,20
+E,35,36
+E,36,37
+E,52,53
+E,53,54
+
+E,1,52
+E,2,53
+E,18,35
+E,19,36
+
+E,1,18
+E,2,19
+E,35,52
+E,36,53
+
+E,1,35
+E,2,18
+E,18,36
+E,52,36
+E,2,52
+E,19,53
+E,36,54
+E,2,20
+E,20,36
+E,2,54
+
+eplo
+
+EGEN, 8, 2, ALL
+
+E,17,68
+E,17,34
+E,34,51
+E,51,68
+E,17,51
+
+!case 1
+F,26,FY,-111.2
+F,43,FY,-111.2
+
+D,1,UX,0
+D,1,UY,0
+D,1,UZ,0
+
+D,52,UX,0
+D,52,UY,0
+D,52,UZ,0
+
+D,17,UY,0
+D,17,UZ,0
+
+D,68,UY,0
+D,68,UZ,0
+
+/SOLU
+SOLVE
+
+/POST1
+
+PRNSOL,U,COMP
+
+set, last
+
+etable,res1,smisc,1
+pretab,res1
